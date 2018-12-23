@@ -8,4 +8,5 @@ add_compile_options(-Wall)
 include_directories(../Stack/logger)
 
 add_executable(SafePtr main.cpp
-        ../Stack/logger/logger.cpp)
+        ../Stack/logger/logger.cpp
+        safeptr.hpp)
