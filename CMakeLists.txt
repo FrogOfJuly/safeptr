@@ -3,4 +3,9 @@ project(SafePtr)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(SafePtr main.cpp)
+add_compile_options(-Wall)
+
+include_directories(../Stack/logger)
+
+add_executable(SafePtr main.cpp
+        ../Stack/logger/logger.cpp)
