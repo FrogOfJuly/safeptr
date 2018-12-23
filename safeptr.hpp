@@ -12,9 +12,9 @@ namespace safety {
     template<class T>
     class safeptr {
         const char static canary_secret;
-        size_t size;
+        const size_t static size;
         char *buffer;
-        int check_canaries() {
+        int check_canaries() const{
             if(buffer == nullptr){
                 return 0;
             }
@@ -41,34 +41,23 @@ namespace safety {
         }
 
         safeptr() {
-            size = 0;
             buffer = nullptr;
         }
 
-        int copy_init(const void * ptr, size_t ptr_size){
+        int copy_init(const T* ptr){
             ASSERT(buffer, nullptr);
             ASSERT(size, 0);
-            if(ptr == nullptr and ptr_size != 0){
-                F_NEW_LOG_ENTRY("cant init safe ptr wiht nullptr with non-zero size");
-                return -1;
-            }
             if(ptr == nullptr){
                 return 0;
             }
-            if(ptr_size % sizeof(T) != 0){
-                F_NEW_LOG_ENTRY("given size is a product of type size: " + std::to_string(sizeof(T)));
-                return -1;
-            }
-            buffer = new(std::nothrow) char[ptr_size + 2];
+            buffer = new(std::nothrow) char[size + 2];
             if(buffer == nullptr){
-                F_NEW_LOG_ENTRY("can't allocate memory of size: " + std::to_string(ptr_size));
+                F_NEW_LOG_ENTRY("can't allocate memory of size: " + std::to_string(safeptr::size));
                 return -1;
             }
             buffer[0] = canary_secret;
-            buffer[ptr_size - 1] = canary_secret;
-            size = ptr_size;
-            auto copy_ptr = reinterpret_cast<const char*>(ptr);
-            std::copy(copy_ptr, copy_ptr + ptr_size, buffer + 1);
+            buffer[safeptr::size + 1] = canary_secret;
+            reinterpret_cast<T*>(buffer + 1) = *ptr;
             return 0;
         }
 
@@ -78,17 +67,15 @@ namespace safety {
             return 0;
         }
 
-        const T&operator[](int idx) const{
-            return *reinterpret_cast<T*>(buffer + 1 + sizeof(T)*idx);
-        }
-
-         T&operator[](int idx) {
-            return *reinterpret_cast<T*>(buffer + 1 + sizeof(T)*idx);
+        bool is_consistant() const{
+            return check_canaries() == 0;
         }
     };
 
     template<class T>
     const char safeptr<T>::canary_secret = (char) (rand());
+    template<class T>
+    const size_t safeptr<T>::size = sizeof(T);
 }
 
 
