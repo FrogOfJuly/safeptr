@@ -74,8 +74,16 @@ namespace safety {
 
         int move_init(void* ptr, size_t ptr_size){
             SAFE_CALL(copy_init(ptr, ptr_size));
-            delete reinterpret_cast<char*>(ptr);
+            delete reinterpret_cast<T*>(ptr);
             return 0;
+        }
+
+        const T&operator[](int idx) const{
+            return *reinterpret_cast<T*>(buffer + 1 + sizeof(T)*idx);
+        }
+
+         T&operator[](int idx) {
+            return *reinterpret_cast<T*>(buffer + 1 + sizeof(T)*idx);
         }
     };
 
