@@ -15,10 +15,11 @@ namespace safety{
         int check_canaries();
         int reset_canaries();
     public:
+        ~safebuffer();
         safebuffer();
         explicit safebuffer(size_t size);
-        int get(size_t start, size_t finish, char* buf);
-        int set(size_t start, size_t finish, char* buf);
+        ssize_t get(size_t start, size_t finish, char *buf);
+        ssize_t set(char* start, char* finish);
     };
 }
 
