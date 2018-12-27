@@ -1,6 +1,7 @@
 //
 // Created by Kirill on 2018-12-27.
 //
+#define SEC_MODE
 #include <logger.h>
 
 #ifndef SAFEPTR_SAFEBUFFER_H
@@ -8,7 +9,7 @@
 
 namespace safety{
     class safebuffer{
-        static const char secret;
+        volatile static const char secret;
         size_t size;
         char* buf;
         int check_canaries();
