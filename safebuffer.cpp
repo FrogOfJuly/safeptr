@@ -21,7 +21,7 @@ int safety::safebuffer::reset_canaries() {
 }
 
 
-int safety::safebuffer::check_canaries() {
+int safety::safebuffer::check_canaries() const {
     if(buf == nullptr) {
         return 0;
     }
@@ -56,37 +56,23 @@ safety::safebuffer::~safebuffer() {
     size = 0;
 }
 
-ssize_t safety::safebuffer::get(size_t start, size_t finish, char *buf) {
+ssize_t safety::safebuffer::get(size_t start, size_t finish, char *buf) const{
     if(start >= size){
         F_NEW_LOG_ENTRY("start is out of range");
         return -1;
     }
-    if(finish >= size){
-        F_NEW_LOG_ENTRY("start is out of range");
+    if(finish > size){
+        F_NEW_LOG_ENTRY("finish is out of range");
         return -1;
     }
     if(buf == nullptr){
         F_NEW_LOG_ENTRY("buffer is nullptr");
         return -1;
     }
-    std::copy(buf + start,buf + finish, buf);
-    return finish - start;
-}
-
-ssize_t safety::safebuffer::get(size_t start, size_t finish, char *buf) {
-    if(start >= size){
-        F_NEW_LOG_ENTRY("start is out of range");
-        return -1;
+    while(start != finish){
+        *(buf + finish - 1) = *(this->buf + finish);
+        finish--;
     }
-    if(finish >= size){
-        F_NEW_LOG_ENTRY("start is out of range");
-        return -1;
-    }
-    if(buf == nullptr){
-        F_NEW_LOG_ENTRY("buffer is nullptr");
-        return -1;
-    }
-    std::copy(buf + start,buf + finish, buf + 1);
     return finish - start;
 }
 
@@ -106,6 +92,14 @@ ssize_t safety::safebuffer::set(char* start, char* finish) {
         start++;
     }
     return i;
+}
+
+bool safety::safebuffer::is_consistant() const {
+    return check_canaries() == 0;
+}
+
+size_t safety::safebuffer::get_size() const {
+    return size;
 }
 
 

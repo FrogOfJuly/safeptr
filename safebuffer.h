@@ -12,14 +12,16 @@ namespace safety{
         volatile static const char secret;
         size_t size;
         char* buf;
-        int check_canaries();
+        int check_canaries() const;
         int reset_canaries();
     public:
         ~safebuffer();
         safebuffer();
         explicit safebuffer(size_t size);
-        ssize_t get(size_t start, size_t finish, char *buf);
+        ssize_t get(size_t start, size_t finish, char *buf) const;
         ssize_t set(char* start, char* finish);
+        bool is_consistant() const;
+        size_t get_size() const;
     };
 }
 
