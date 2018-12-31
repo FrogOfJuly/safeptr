@@ -70,7 +70,7 @@ ssize_t safety::safebuffer::get(size_t start, size_t finish, char *buf) const{
         return -1;
     }
     while(start != finish){
-        *(buf + finish - 1) = *(this->buf + finish);
+        *(buf + finish - 1) = *(this->buf - 1 + finish + 1);
         finish--;
     }
     return finish - start;

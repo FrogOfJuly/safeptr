@@ -31,19 +31,21 @@ int main() {
     for(int i = 0; i < size; i++){
         tmp[i] = static_cast<char>(i);
     }
+    std::cout<<"setting buf with tmp"<<std::endl;
     if(buf.set(tmp, tmp + size) < 0){
         std::cout<<processor::log<<std::endl;
         return 0;
     }
+    std::cout<<"set is ok"<<std::endl;
+    std::cout<<"resetting tmp with zeros"<<std::endl;
     for(int i = 0; i < size; i++){
         tmp[i] = 0;
     }
-    std::cout<<"set is ok"<<std::endl;
     if(buf.get(0, size, tmp) < 0){
         std::cout<<processor::log<<std::endl;
         return 0;
     }
-    std::cout<<"tmp buffer after reset:";
+    std::cout<<"tmp buffer after gett:";
     for(int i = 0; i < size; i++){
         std::cout<<+tmp[i];
     }
