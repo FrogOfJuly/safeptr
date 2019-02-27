@@ -11,4 +11,5 @@ add_executable(SafePtr
         main.cpp
         ../Stack/logger/logger.cpp
         safebuffer.cpp
-        safebuffer.h)
+        safebuffer.h
+        safeptr.hpp)
