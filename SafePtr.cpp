@@ -89,7 +89,7 @@ utils::SafePtr &utils::SafePtr::operator=(const utils::SafePtr &other) {
     return *this;
 }
 
-void utils::SafePtr::erase() {
+void utils::SafePtr::erase() noexcept {
     bool valid_op = true;
     if (not valid_inside_canaries()) {
         valid_op = false;
@@ -98,10 +98,6 @@ void utils::SafePtr::erase() {
     if (not valid_outside_canaries()) {
         valid_op = false;
         F_NEW_LOG_ENTRY("outside canaries of the left operand are invalid");
-    }
-    if (not valid_op) {
-        F_NEW_LOG_ENTRY("throwing runtime error");
-        throw std::runtime_error("erasing operation failed due to invalid argument. See log for details");
     }
     delete[] ptr;
     size = 0;

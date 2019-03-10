@@ -30,7 +30,7 @@ namespace utils {
 
         bool is_valid() const noexcept;
 
-        void erase();
+        void erase() noexcept;
 
     };
 }
