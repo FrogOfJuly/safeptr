@@ -7,6 +7,7 @@
 
 namespace utils {
     class SafePtr {
+    protected:
         const static char SafePtr_secret;
         const volatile char first_canary = SafePtr_secret;
         char *ptr; //NO OWNERSHIP
