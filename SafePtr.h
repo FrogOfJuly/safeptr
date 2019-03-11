@@ -19,7 +19,7 @@ namespace utils {
         void reset_inside_canaries() noexcept;
 
     public:
-        ~SafePtr();
+        virtual ~SafePtr();
 
         SafePtr() noexcept;
 
