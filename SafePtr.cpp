@@ -8,12 +8,6 @@
 const char utils::SafePtr::SafePtr_secret = (char) (rand() % 255);
 
 utils::SafePtr::~SafePtr() {
-    if (not valid_inside_canaries()) {
-        F_NEW_LOG_ENTRY("inside canaries are invalid");
-    }
-    if (not valid_outside_canaries()) {
-        F_NEW_LOG_ENTRY("outsied canaries are invalid");
-    }
     ptr = nullptr;
     size = 0;
 }
